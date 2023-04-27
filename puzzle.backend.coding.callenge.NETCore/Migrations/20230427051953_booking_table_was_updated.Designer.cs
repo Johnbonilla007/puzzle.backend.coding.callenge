@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using puzzle.backend.coding.callenge.NETCore.Infraestructure.DataContext;
 
@@ -11,9 +12,11 @@ using puzzle.backend.coding.callenge.NETCore.Infraestructure.DataContext;
 namespace puzzle.backend.coding.callenge.NETCore.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    partial class MyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230427051953_booking_table_was_updated")]
+    partial class booking_table_was_updated
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,7 +42,7 @@ namespace puzzle.backend.coding.callenge.NETCore.Migrations
                     b.Property<int>("EventId")
                         .HasColumnType("int");
 
-                    b.Property<int>("FurnitureId")
+                    b.Property<int?>("FurnitureId")
                         .HasColumnType("int");
 
                     b.Property<string>("RentalDetails")
@@ -54,6 +57,8 @@ namespace puzzle.backend.coding.callenge.NETCore.Migrations
                     b.HasIndex("ClientId");
 
                     b.HasIndex("EventId");
+
+                    b.HasIndex("FurnitureId");
 
                     b.HasIndex("StatusId");
 
@@ -84,10 +89,6 @@ namespace puzzle.backend.coding.callenge.NETCore.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -147,9 +148,6 @@ namespace puzzle.backend.coding.callenge.NETCore.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FurnitureId"));
 
-                    b.Property<int>("BookingId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -161,13 +159,7 @@ namespace puzzle.backend.coding.callenge.NETCore.Migrations
                     b.Property<decimal>("RentalFee")
                         .HasColumnType("decimal(5,2)");
 
-                    b.Property<string>("State")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("FurnitureId");
-
-                    b.HasIndex("BookingId");
 
                     b.ToTable("Furnitures");
                 });
@@ -203,6 +195,10 @@ namespace puzzle.backend.coding.callenge.NETCore.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("puzzle.backend.coding.callenge.NETCore.Domain.Aggregates.FurnitureAgg.Furniture", null)
+                        .WithMany("Bookings")
+                        .HasForeignKey("FurnitureId");
+
                     b.HasOne("puzzle.backend.coding.callenge.NETCore.Domain.Aggregates.StatusAgg.Status", "Status")
                         .WithMany()
                         .HasForeignKey("StatusId")
@@ -223,28 +219,17 @@ namespace puzzle.backend.coding.callenge.NETCore.Migrations
                         .HasForeignKey("StatusId");
                 });
 
-            modelBuilder.Entity("puzzle.backend.coding.callenge.NETCore.Domain.Aggregates.FurnitureAgg.Furniture", b =>
-                {
-                    b.HasOne("puzzle.backend.coding.callenge.NETCore.Domain.Aggregates.BookinAgg.Booking", "Booking")
-                        .WithMany("Furnitures")
-                        .HasForeignKey("BookingId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Booking");
-                });
-
-            modelBuilder.Entity("puzzle.backend.coding.callenge.NETCore.Domain.Aggregates.BookinAgg.Booking", b =>
-                {
-                    b.Navigation("Furnitures");
-                });
-
             modelBuilder.Entity("puzzle.backend.coding.callenge.NETCore.Domain.Aggregates.ClientAgg.Client", b =>
                 {
                     b.Navigation("Bookings");
                 });
 
             modelBuilder.Entity("puzzle.backend.coding.callenge.NETCore.Domain.Aggregates.EventAgg.Event", b =>
+                {
+                    b.Navigation("Bookings");
+                });
+
+            modelBuilder.Entity("puzzle.backend.coding.callenge.NETCore.Domain.Aggregates.FurnitureAgg.Furniture", b =>
                 {
                     b.Navigation("Bookings");
                 });

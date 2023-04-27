@@ -10,11 +10,11 @@ namespace puzzle.backend.coding.callenge.NETCore.Infraestructure.DataContext
 {
     public class MyDbContext : DbContext
     {
-        public DbSet<Client> Client { get; set; }
-        public DbSet<Event> Event { get; set; }
-        public DbSet<Furniture> Furniture { get; set; }
-        public DbSet<Booking> Booking { get; set; }
-        public DbSet<Status> Status { get; set; }
+        public DbSet<Client> Clients { get; set; }
+        public DbSet<Event> Events { get; set; }
+        public DbSet<Furniture> Furnitures { get; set; }
+        public DbSet<Booking> Bookings { get; set; }
+        public DbSet<Status> Statuses { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

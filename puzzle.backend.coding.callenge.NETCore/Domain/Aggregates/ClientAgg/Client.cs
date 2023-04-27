@@ -11,8 +11,7 @@ namespace puzzle.backend.coding.callenge.NETCore.Domain.Aggregates.ClientAgg
         public string Email { get; set; }
         public string Phone { get; set; }
         public DateTime DateOfBirth { get; set; }
-        public int StatusId { get; set; }
-        public Status Status { get; set; }
         public List<Booking> Bookings { get; set; }
+        public string Status { get; set; }
     }
 }
