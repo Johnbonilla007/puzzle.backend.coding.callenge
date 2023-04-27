@@ -42,7 +42,7 @@ namespace puzzle.backend.coding.callenge.NETCore.Tests.UnitTesting.Domain.Servic
 
             };
             DomainExceptionError expect =
-                new DomainExceptionError { ValidationErrorMessage = "Only clients over 21 years old are allowed to make a Booking" };
+                new DomainExceptionError { ValidationErrorMessage = "Only clients over 21 years old are allowed to make a booking" };
 
 
             //Act
@@ -100,14 +100,14 @@ namespace puzzle.backend.coding.callenge.NETCore.Tests.UnitTesting.Domain.Servic
                 RentalDetails = "Wedding",
                 ClientId = 2,
             };
-            DomainExceptionError expect = new DomainExceptionError { ValidationErrorMessage = "Booking time conflicts with an existing Booking." };
+            DomainExceptionError expect = new DomainExceptionError { ValidationErrorMessage = "Booking time conflicts with an existing booking." };
 
             DomainExceptionError result = _bookingDomainService.ValidateBookingExistance(existingBooking, newBooking);
 
 
             // Assert
             Assert.NotNull(result);
-            Assert.Equal(expect.ValidationErrorMessage, result.ValidationErrorMessage);
+            Assert.Equal(expect.ValidationErrorMessage, result?.ValidationErrorMessage);
         }
 
         [Fact]
